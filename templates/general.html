@@ -1,0 +1,20 @@
+{%extends 'base.html'%}
+
+{%block body%}
+<div class='signinform'>
+	<div class='signinheader'>
+ <h2 id='signinheader'>Post The Item Here</h2>
+</div>
+ <form enctype="multipart/form-data"", method='POST', action="{{url_for('general')}}">
+{{form.csrf_token}}
+{{ wtf.form_field(form.agent_id, id='formfield' ) }}
+{{ wtf.form_field(form.product_category, id='formfield' ) }}
+{{ wtf.form_field(form.product_name, id='formfield' ) }}
+{{ wtf.form_field(form.product_description, id='comment' ) }}
+{{ wtf.form_field(form.front_image, id='comment' ) }}
+{{ wtf.form_field(form.real_price, id='formfield' ) }}
+{{ wtf.form_field(form.first_price, id='formfield' ) }}
+<input type='submit', class='loginbutton', value='POST ITEM'/> 
+</form>                                           
+</div>
+{%endblock%}

@@ -1,0 +1,24 @@
+{%extends 'base.html' %}
+{%block body%}
+<div class='signinheader'>
+	<h2 id='signinheader'>Signup For An Account Here</h2>
+</div>
+<div class='signinform'>
+	<form method='POST' action= "{{url_for('signup')}}" enctype="multipart/form-data">
+		    {{ form.csrf_token}}
+			{{ wtf.form_field(form.surname, id='formfield') }}
+			{{ wtf.form_field(form.othernames, id='formfield') }}
+			{{ wtf.form_field(form.admin, id='formfield') }}
+			{{ wtf.form_field(form.attach_photo, id='comment') }}
+			{{ wtf.form_field(form.mobile_number, id='formfield') }}
+			{{ wtf.form_field(form.telephone_number, id='formfield') }}
+			{{ wtf.form_field(form.email, id='formfield') }}
+			{{ wtf.form_field(form.city, id='formfield') }}
+			{{ wtf.form_field(form.residence, id='formfield') }}
+			{{ wtf.form_field(form.username, id='formfield') }}
+			{{ wtf.form_field(form.password, id='formfield') }}
+			{{ wtf.form_field(form.password2, id='formfield') }}
+			<input type= submit class='loginbutton' value='SIGNUP'/>
+	</form>
+</div>
+{%endblock%}

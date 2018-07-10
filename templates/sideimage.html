@@ -1,0 +1,13 @@
+{%extends 'base.html' %}
+{%block body%}
+<div class='signinheader'>
+	<h2>Post the Side Image Here</h2>
+</div>
+<div class='signinform'>
+<form enctype="multipart/form-data", method='POST', action="{{url_for('addsideimage', id=item.product_id)}}">
+	{{form.csrf_token}}
+	{{wtf.form_field(form.side_image, id='comment')}}
+	<input type='submit', value='POST', class='loginbutton'>
+</form>
+</div>
+{%endblock%}

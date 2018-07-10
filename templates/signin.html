@@ -1,0 +1,16 @@
+{%extends "base.html" %}
+
+{%block body%}
+<div class="signinheader">
+	<h1>Signin into your Account</h1>
+</div>
+
+<div class='signinform'>
+	<form method='POST', encytpe="multipart/form-data" action="{{url_for('signin')}}">
+		    {{ form.csrf_token }} 
+			{{ wtf.form_field(form.username, id='formfield' ) }}<br/>
+			{{ wtf.form_field(form.password, id='formfield' ) }}<br/>
+			<input type='submit',  class='loginbutton', value='Login'>
+	</form>
+</div>
+{%endblock%}

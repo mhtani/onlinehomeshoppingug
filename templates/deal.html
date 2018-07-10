@@ -1,0 +1,19 @@
+{%extends "base.html" %}
+
+{%block body%}
+<div class="signinheader">
+	<h1>Post the Deals Here</h1>
+</div>
+
+<div class='signinform'>
+	<form enctype="multipart/form-data" method='POST',  action="{{url_for('deals')}}">
+		    {{ form.csrf_token }} 
+			{{ wtf.form_field(form.agent_id, id='formfield' ) }}<br/>
+			{{ wtf.form_field(form.title, id='formfield' ) }}<br/>
+			{{ wtf.form_field(form.deal_description, id='comment' ) }}<br/>
+			{{ wtf.form_field(form.deal_image, id='comment' ) }}<br/>
+			<input type='submit',  class='loginbutton', value='Login'>
+	</form>
+</div>
+
+{%endblock%}

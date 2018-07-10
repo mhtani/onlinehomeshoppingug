@@ -1,0 +1,21 @@
+{%extends 'base.html' %}
+{%block body%}
+<div class='signinheader'>
+<h2 id='signinheader'>Place Your Order Here</h2>	
+</div>
+
+<div class='signinform'>
+	<form enctype="multipart/form-data" method='POST' action= "{{url_for('optionone')}}" >
+		    {{ form.csrf_token}}
+			{{ wtf.form_field(form.productname, id='formfield') }}
+			{{ wtf.form_field(form.size, id='formfield') }}
+			{{ wtf.form_field(form.color, id='formfield') }}
+			{{ wtf.form_field(form.quantity, id='formfield') }}
+			{{ wtf.form_field(form.clientname, id='formfield') }}
+			{{ wtf.form_field(form.mobile_number, id='formfield') }}
+			{{ wtf.form_field(form.email, id='formfield') }}
+			{{ wtf.form_field(form.address, id='comment') }}
+			<input type= submit class='loginbutton' value='ORDER'/>
+	</form>
+</div>
+{%endblock%}

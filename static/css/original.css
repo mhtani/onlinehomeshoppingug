@@ -1,0 +1,444 @@
+/*--//my own styling--*/
+
+  .signinform
+{
+    margin: 0 auto;
+    width: 400px;
+    padding: 20px;
+}    
+
+
+#formfield
+{
+    width: 380px;
+    height: 40px;
+    padding: 5px;
+    border: 0.5px solid #8B0A50;
+
+}
+
+
+#comment
+{
+    width: 380px;
+    height: 150px;
+    border: 0.5px solid #8B0A50;
+    margin-top: 5px;
+}
+
+.loginbutton
+{
+    border: none;
+    padding: 0.8em 2.5em;
+    font-size: 15px;
+    outline: none;
+    text-align:center;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: #cf000f;
+    color: #fff;
+    width:380px;
+}
+
+.loginbutton:hover
+{
+    color: #fbb710;
+}
+
+
+
+#salelink
+{
+  color:#fff;
+}
+
+.signinheader
+{
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    color: #cf000f;
+}
+
+.signinheader h6
+{
+  text-align:left;
+  color:333333;
+  margin-left:16%;
+}
+
+.signheader h2 p
+{
+  color:#680000;
+}
+
+.list
+{
+    text-align: center;
+    margin-top: 20px;
+}
+
+#bullet
+{
+    display: block;
+    text-decoration: none;
+    margin: 10px;
+    padding: 10px;}
+
+#myown 
+{
+    text-decoration:none;
+}
+
+
+.section1
+{
+    width: 65%;
+    height: 100%;
+    color:#000;
+    margin-left: 15%;
+    margin-top: 20px;
+    min-width: 65%;
+    border-left: 2px solid #fbb710;
+    border-bottom: 2px solid #fbb710;
+    border-top: 2px solid #fbb710;
+}
+
+.section2
+{
+    width: 75%;
+    height:100%;
+    border: 2px solid #fbb710;
+    margin-left: 15%;
+    margin-top: 30px;
+    margin-bottom:20px;
+    text-align: left;
+}
+
+.section2 h4
+{
+    text-align: left;
+    color:#000;
+    margin:5px;
+}
+
+.section1 h4
+{
+    text-align: left;
+    margin:5px;
+    color: #000;
+    margin-left:30px;
+}
+
+.section2 h3
+{
+    text-align: left;
+    margin:5px;
+    color: #000;
+}
+
+
+#backofficeholder h2
+{
+    margin-bottom: : 20px;
+    text-align: center;
+}
+
+
+{
+    color: #000;
+}
+
+#myown:visited
+{
+    color: #8B0A50;
+}
+
+#myown:hover
+{
+    color: #cf000f;
+}
+
+ul#postlist
+{
+    text-align: : center;
+    margin: 10px;
+}
+
+
+li#plist 
+{
+    display: inline;
+    text-decoration: none;
+    margin: 15px;
+    padding: 10px;
+}
+
+#agentbackofficephoto
+{
+    width: 32%;
+    height: 250px;
+    margin:10px;
+    margin-left:40px;
+    border:2px solid #fbb710;
+    min-width: 300px;
+    min-height: 230px;
+}
+
+}
+    .header-middle #formfield2 {
+        width: 83%;
+    }
+
+    #formfield2 label
+    {
+        display: none;
+    }
+
+    #toplogo
+    {
+        width:150px;
+        height:120px;
+    }
+
+
+    .searchform label
+    {
+        display:none;
+    }
+
+    .searchform label
+    {
+        display:none;
+    }
+
+    #searchfield
+    {
+        height:35px;
+    }
+
+    .about
+    {
+        background: url(../images/onlinelogo.jpg) no-repeat center;
+        width:80%;
+        height:700px;
+        color:#fbb710;
+        text-align:center;
+        margin: 10%;
+        margin-top: 5%;
+        margin-bottom: 5%;
+    }
+
+    /*--a.link {
+    outline: none;
+    border: none;
+    background: #17c3a2;
+    width: 48px;
+    height: 43px;
+    font-size: 24px;
+    color: #000;
+}
+
+    .snipcart-details a.link {
+    font-size: 13px;
+    color: #fff;
+    background: #cf000f;
+    text-decoration: none;
+    position: relative;
+    border: none;
+    border-radius: 0;
+    width: 100%;
+    text-transform: uppercase;
+    padding: .5em 0;
+    outline: none;
+    letter-spacing: 1px;
+    font-weight: 600;
+}--*/
+
+.link
+{
+    border: none;
+    padding: 0.8em 2.5em;
+    font-size: 15px;
+    outline: none;
+    text-align:center;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: #cf000f;
+    color: #fff;
+    width:400px;
+}
+
+/*--.hvr-outline-out {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -moz-osx-font-smoothing: grayscale;
+  position: relative;
+  background: #cf000f;
+}
+.link:before {
+  content: '';
+  position: absolute;
+  border: #cf000f solid 4px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: top, right, bottom, left;
+  transition-property: top, right, bottom, left;
+}
+.link:hover:before,.link:focus:before,.link:active:before {
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+}--*/
+
+#displayimage
+{
+    width:98%;
+    height:280px;
+}
+
+.box1
+{
+    width:94%;
+    height:100%;
+    margin-left:5%;
+}
+
+.allimages
+{
+    width:50%;
+    height:450px;
+    margin:2px;
+    margin:1px solid #fbb710;
+}
+
+.front
+{
+    width:90%;
+    height:60%;
+    margin-left: 5%;
+
+}
+
+#front
+{
+    width:75%;
+    height:98%;
+    margin-top: 20px;
+    min-width: 350px;
+    min-height: 380px;
+}
+.rating
+{
+    width:45%;
+    height:500px;
+    margin:1px solid #fbb710;
+    min-width: 400px;
+    height:400px;
+    margin-top: 60px;
+}
+
+.allimages,.rating
+{
+    float:left;
+}
+
+.floated
+{
+    width:80%;
+    height: 300px;
+    margin-left: 2%;
+}
+
+.side
+{
+    width:45%;
+    height:250px;
+}
+
+.hind
+{
+    width:45%;
+    height:250px;
+}
+
+#side, #hind
+{
+    width:90%;
+    height:70%px;
+    margin-top: 5px;
+}
+
+.side,.hind
+{
+    float:left;
+}
+
+.link
+{
+    margin-top:10px;
+    width:300px;
+}
+
+#compliments
+{
+    color:#8B0A50;
+    font-weight: medium;
+}
+
+#contact
+{
+    width:20px;
+    height:20px;
+}
+
+#error
+{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.bundles li
+{
+    margin:40px;
+    text-decoration: none;
+}
+
+.bundles a
+{
+    text-decoration: none;
+}
+
+#li
+{
+    text-decoration: none;
+    display: block;
+}
+.edit li 
+{
+    display:block;
+    text-decoration: none;
+    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.edit h4
+{
+    margin-bottom: 10px;
+}
+
+.agile_top_brand_left_grid:hover .snipcart-details a.link,.snipcart-details input.button:hover{
+    background:#cf000f;
+

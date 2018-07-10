@@ -1,0 +1,11 @@
+{%extends 'base.html'%}
+{%block body%}
+<div class='signinform'>
+	<ul class='bundles'>
+	<li id='li'><a href="{{url_for('additem1',id=item.product_id)}}" class='link'>Add Bundle Item1</a></li>
+	<li id='li'><a href="{{url_for('additem2', id=item.product_id)}}" class='link'>Add Bundle Item2</a></li>
+	<li id='li'><a href="{{url_for('additem3', id=item.product_id)}}" class='link'>Add Bundle Item3</a></li>
+	<li id='li'><a href="{{url_for('additem4', id=item.product_id)}}" class='link'>Add Bundle Item4</a></li>
+    </ul>
+</div>
+{%endblock%}

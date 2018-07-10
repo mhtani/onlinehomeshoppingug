@@ -1,0 +1,17 @@
+{%extends 'base.html' %}
+{%block body%}
+<div class='signinheader'>
+	<h2>Post the Bundle item Here</h2>
+</div>
+<div class='signinform'>
+<form enctype="multipart/form-data", method='POST', action="{{url_for('additem4', id=item.product_id)}}">
+	{{form.csrf_token}}
+	{{wtf.form_field(form.alsobought, id='formfield')}}
+	{{wtf.form_field(form.alsobought_description, id='comment')}}
+	{{wtf.form_field(form.alsobought_image, id='comment')}}
+	{{wtf.form_field(form.alsoboughtreal_price, id='formfield')}}
+	{{wtf.form_field(form.alsoboughtfirst_price, id='formfield')}}
+	<input type='submit', value='POST', class='loginbutton'>
+</form>
+</div>
+{%endblock%}
