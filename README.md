@@ -1,2 +1,2 @@
-#OnlineHomeShoppingUg
+OnlineHomeShoppingUg
 A Flask ecommerce platform
