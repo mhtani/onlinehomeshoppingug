@@ -1,8 +1,5 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block content %} <div class="container">    {% for message in get_flashed_messages() %}    <div class="alert alert-warning">        <button type="button" class="close" data-dismiss="alert">&times;</button>        {{ message }}    </div>    {% endfor %}
-    {% block page_content %}{% endblock %} </div> {% endblock %} 
-
 <!--
 Author: W3layouts
 Author URL: http://w3layouts.com
@@ -14,6 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
 <title>OnlineHomeShoppingUG</title>
 <!--/tags -->
+<link rel="icon" href="static/images/onlinelogo1.jpg"/>
 <meta name="author" content="Michael Henry Tani"/>
 <meta name="keywords" content="shopping,online,price,cheap,goods,home" />
 <meta name="description" content="Online Home-Shopping offers Quality Items  at Cheap prices. You take less than 10 minutes to order and we deliver on the same day and in time. 
@@ -42,7 +40,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800" rel="stylesheet">
 <link href='//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,900,900italic,700italic' rel='stylesheet' type='text/css'>
 </head>
+
 <body>
+	 {% for message in get_flashed_messages() %}    <div class="alert alert-warning">        <button type="button" class="close" data-dismiss="alert">&times;</button>        {{ message }}    </div>    {% endfor %}
+ 
 <!-- header -->
 <div class="header" id="home">
 	<div class="container">
@@ -1933,10 +1934,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="footer">
 	<div class="footer_agile_inner_info_w3l">
 		<div class="col-md-3 footer-left">
-			<h2><a href="index.html"><span></span>OHSUG</a></h2>
-			<p>Delivering Trust wheneverever you are.</p>
+			<h2><a href="#"><span>OHSUG</span></a></h2>
+			<p>Delivering Trust Wherever you are at the right time.</p>
+			<p>At OHSUG Customer is King</p>
 			<ul class="social-nav model-3d-0 footer-social w3_agile_social two">
-															<li><a href="#" class="facebook">
+															<li><a href="https://www.facebook.com/OnlineHomeShoppingUg" class="facebook">
 																  <div class="front"><i class="fa fa-facebook" aria-hidden="true"></i></div>
 																  <div class="back"><i class="fa fa-facebook" aria-hidden="true"></i></div></a></li>
 															<li><a href="#" class="twitter"> 
@@ -1953,14 +1955,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="col-md-9 footer-right">
 			<div class="sign-grds">
 				<div class="col-md-4 sign-gd">
-					<h4>Categories <span></span> </h4>
+					<h4><span>Categories</span> </h4>
 					<ul>
-						<li><a href="index.html">Electronics</a></li>
-						<li><a href="mens.html">Kitchenware</a></li>
-						<li><a href="womens.html">Beddings</a></li>
-						<li><a href="about.html">Clothes</a></li>
-						<li><a href="typography.html">Shoes</a></li>
-						<!--<li><a href="contact.html">Contact</a></li>-->
+						<li><a href="{{url_for('minielectronics')}}">Electronics</a></li>
+						<li><a href="{{url_for('minikitchenware')}}">Kitchenware</a></li>
+						<li><a href="{{url_for('minibeddings')}}">Beddings</a></li>
+						<li><a href="{{url_for('minibeddings')}}">Clothes</a></li>
+						<li><a href="{{url_for('minibeddings')}}.html">Shoes</a></li>
 					</ul>
 				</div>
 				
@@ -1973,7 +1974,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</div>
 							<div class="w3-address-right">
 								<h6>Phone Number</h6>
-								<p>+256784489908</p>
+								<p>+256772678573</p>
 							</div>
 							<div class="clearfix"> </div>
 						</div>
@@ -1983,7 +1984,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</div>
 							<div class="w3-address-right">
 								<h6>Email Address</h6>
-								<p>Email :<a href="onlineshoppingug@gmail.com"> onlineshoppingug@gmail.com</a></p>
+								<p><a href="mailto:onlinehomeshoppingug@gmail.com">onlinehomeshoppingug@gmail.com</a></p>
 							</div>
 							<div class="clearfix"> </div>
 						</div>
@@ -2004,22 +2005,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="col-md-3 sign-gd flickr-post">
 					<h4>Store <span></span></h4>
 					<ul>
-						<!--<li><a href="single.html"><img src="static/images/duvet11.jpg" alt=" " class="img-responsive" /></a></li>
-						<li><a href="single.html"><img src="static/images/clothes4.jpeg" alt=" " class="img-responsive" /></a></li>
-						<li><a href="single.html"><img src="static/images/curtain4.jpg" alt=" " class="img-responsive" /></a></li>-->
-						<li><a href="single.html"><img src="static/images/furniture11.jpg" alt=" " class="img-responsive" /></a></li>
-						<li><a href="single.html"><img src="static/images/clothes4.jpeg" alt=" " class="img-responsive" /></a></li>
-						<li><a href="single.html"><img src="static/images/net11.jpg" alt=" " class="img-responsive" /></a></li>
-						<!--<li><a href="single.html"><img src="static/images/pillow44.jpg" alt=" " class="img-responsive" /></a></li>
-						<li><a href="single.html"><img src="static/images/duvet11.jpg" alt=" " class="img-responsive" /></a></li>-->
-						<li><a href="single.html"><img src="static/images/woofer11.png" alt=" " class="img-responsive" /></a></li>
+						<li><a href="{{url_for('minifurniture')}}"><img src="{{url_for('static',filename='images/furniture11.jpg')}}" alt=" " class="img-responsive" /></a></li>
+						<li><a href="{{url_for('minielectronics')}}"><img src="{{url_for('static',filename='images/clothes4.jpeg')}}" alt=" " class="img-responsive" /></a></li>
+						<li><a href="{{url_for('minibeddings')}}"><img src="{{url_for('static',filename='images/net11.jpg')}}" alt=" " class="img-responsive" /></a></li>
 					</ul>
 				</div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
-		<div class="agile_newsletter_footer">
-					<div class="agile_newsletter_footer">
+		<div class="clearfix"></div>
+			<div class="agile_newsletter_footer">
 					<!--<div class="col-sm-6 newsleft">-->
 				<p>OnlineHomeShoppingUG (OHSUG) is a member of OnlinehomeShoppingEA (OHSEA) operating across East Africa</p>
 			<!--</div>
@@ -2101,6 +2096,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 <!-- //login -->
 <a href="#home" class="scroll" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+
 <!-- js -->
 <script type="text/javascript" src="static/js/jquery-2.1.4.min.js"></script>
 <!-- //js -->
@@ -2120,9 +2116,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 
 	<!-- //cart-js --> 
-	<!-- single -->
-<script src="static/js/imagezoom.js"></script>
-<!-- single -->
 <!-- script for responsive tabs -->						
 <script src="static/js/easy-responsive-tabs.js"></script>
 <script>
@@ -2147,19 +2140,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	});
 	});
 </script>
-<!-- FlexSlider -->
-<script src="static/js/jquery.flexslider.js"></script>
-						<script>
-						// Can also be used with $(document).ready()
-							$(window).load(function() {
-								$('.flexslider').flexslider({
-								animation: "slide",
-								controlNav: "thumbnails"
-								});
-							});
-						</script>
-					<!-- //FlexSlider-->
 <!-- //script for responsive tabs -->		
+<!-- stats -->
+	<script src="static/js/jquery.waypoints.min.js"></script>
+	<script src="static/js/jquery.countup.js"></script>
+	<script>
+		$('.counter').countUp();
+	</script>
+<!-- //stats -->
 <!-- start-smoth-scrolling -->
 <script type="text/javascript" src="static/js/move-top.js"></script>
 <script type="text/javascript" src="static/js/jquery.easing.min.js"></script>
@@ -2189,9 +2177,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script>
 <!-- //here ends scrolling icon -->
 
+
 <!-- for bootstrap working -->
 <script type="text/javascript" src="static/js/bootstrap.js"></script>
-<!--the talk widget-->
+
+<!--The tawk popup widget-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
@@ -2203,6 +2193,7 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-<!--end of the talk widget-->
+
+<!--End of the Talk widget-->
 </body>
 </html>

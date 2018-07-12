@@ -12,5 +12,8 @@
 			{{ wtf.form_field(form.password, id='formfield' ) }}<br/>
 			<input type='submit',  class='loginbutton', value='Login'>
 	</form>
+	<ul class='list'>
+		<li id='bullet'><a id='myown' href ="{{url_for('reset')}}">Forgot Password?</a></li>
+	</ul>
 </div>
 {%endblock%}

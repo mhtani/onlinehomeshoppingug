@@ -107,6 +107,10 @@ class User(UserMixin, db.Model):
 	username=db.Column(db.String(64),unique=True)
 	password_hash=db.Column(db.Text)
 
+	email_confirmation_sent_on = db.Column(db.DateTime, nullable=True)
+	email_confirmed = db.Column(db.Boolean, nullable=True, default=False)
+	email_confirmed_on = db.Column(db.DateTime, nullable=True)
+
 
 	product = db.relationship('Product', backref='user', lazy='dynamic')
 	deal = db.relationship('Deal', backref='user', lazy='dynamic')
@@ -204,7 +208,7 @@ class Order(db.Model):
 
 
 
-
+#db.drop_all()
 #db.create_all()
 
 
@@ -221,16 +225,24 @@ class SignupForm(Form):
 	surname=StringField('Surname', validators=[Required()])
 	othernames=StringField('Othernames', validators=[Required()])
 	admin=SelectField('Admin', choices=[('Yes','Yes'),('No','No')])
-	attach_photo=FileField('Attach Your Photo',validators=[Optional(), FileAllowed(images, 'Only images are allowed here')])
+	attach_photo=FileField('Attach Your Photo',validators=[Required()])
 	telephone_number=StringField('Telephone Number')
 	mobile_number=StringField('Mobile Number')
 	username=StringField('Create Username',validators=[Required()])
 	email=StringField('Email')
-	city=StringField('City')
+	city=StringField('City', validators=[Required()])
 	residence=StringField('Residence')
 	password=PasswordField('Password', validators=[Required()])
 	password2=PasswordField('Confirm Password')
 	submit=SubmitField('LOGIN')
+
+	def validate_email(self, field):
+		if User.query.filter_by(email=field.data).first():
+			raise ValidationError('Email is Already Registered')
+
+	def validate_username(self, field):
+		if User.query.filter_by(username=field.data).first():
+			raise ValidationError('Username is Already Taken')
 
 
 class ProfileForm(Form):
@@ -383,7 +395,7 @@ class EdititemForm(Form):
 
 class BonusitemForm(Form):
 	alsobought=StringField('Bundle Item', validators=[Required()])
-	alsobought_image=FileField('Item Image', validators=[Optional()])
+	alsobought_image=FileField('Item Image', validators=[Required()])
 	alsobought_description=TextAreaField('Product Description',validators=[Required()])
 	alsoboughtreal_price=StringField('Real Price',validators=[Required()])
 	alsoboughtfirst_price=StringField('First Price')
@@ -404,6 +416,14 @@ class DealForm(Form):
 	deal_image=FileField('Deal Image')
 	submit=SubmitField('POST')
 
+class EmailForm(Form):
+	email=StringField('Enter Your Email', validators=[Required()])
+	submit=SubmitField('SUBMIT')
+
+class PasswordForm(Form):
+	password=PasswordField('Enter New Password', validators=[Required()])
+	submit=SubmitField('SUBMIT')
+
 
 
 #sending mail thread
@@ -420,6 +440,72 @@ def send_email(subject, recipients, text_body, html_body):
     thr = Thread(target=send_async_email, args=[msg])
     thr.start()
 
+#password reset
+def send_password_reset_email(user_email):
+    password_reset_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+ 
+    password_reset_url = url_for(
+        'reset_with_token',
+        token = password_reset_serializer.dumps(user_email, salt='password-reset-salt'),
+        _external=True)
+ 
+    html = render_template(
+        'email_password_reset.html',
+        password_reset_url=password_reset_url)
+ 
+    send_email('Password Reset Requested', 
+    	[user_email],
+    	password_reset_url,
+    	render_template('email_password_reset.html',password_reset_url=password_reset_url)
+     )
+
+
+@app.route('/reset', methods=["GET", "POST"])
+def reset():
+    form = EmailForm()
+    if form.validate_on_submit():
+        try:
+            user = User.query.filter_by(email=form.email.data).first_or_404()
+        except:
+            flash('Invalid email address!', 'error')
+            return render_template('password_reset_email.html', form=form)
+         
+        if user.email_confirmed:
+            send_password_reset_email(user.email)
+            flash('Please check your email for a password reset link.', 'success')
+        else:
+            flash('Your email address must be confirmed before attempting a password reset.', 'error')
+        return redirect(url_for('signin'))
+ 
+    return render_template('password_reset_email.html', form=form)
+
+
+
+@app.route('/reset/<token>', methods=["GET", "POST"])
+def reset_with_token(token):
+    try:
+        password_reset_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        email = password_reset_serializer.loads(token, salt='password-reset-salt', max_age=3600)
+    except:
+        flash('The password reset link is invalid or has expired.', 'error')
+        return redirect(url_for('signin'))
+ 
+    form = PasswordForm()
+ 
+    if form.validate_on_submit():
+        try:
+            user = User.query.filter_by(email=email).first_or_404()
+        except:
+            flash('Invalid email address!', 'error')
+            return redirect(url_for('signin'))
+ 
+        user.password = form.password.data
+        db.session.add(user)
+        db.session.commit()
+        flash('Your password has been updated!', 'success')
+        return redirect(url_for('signin'))
+ 
+    return render_template('reset_password_with_token.html', form=form, token=token)
 
 
 
@@ -472,15 +558,23 @@ def index():
 
 
 @app.route('/signin', methods=['POST', 'GET'])
-@login_required
 def signin():
 	form = SigninForm()
 	if form.validate_on_submit():
 		user=User.query.filter_by(username=form.username.data).first()
 		if user is not None and user.verify_password(form.password.data):
 			login_user(user, remember=True)
-			return redirect(request.args.get('next') or url_for('backoffice'))
-			flash('You are now logged in')
+
+			if current_user.username=='Administrator' or 'mhtani' or 'hillary' or 'mungai38':
+				flash('You are now logged in Admin')
+				return redirect(request.args.get('next') or url_for('backoffice'))
+			else:
+				flash('Permission denied! sorry you cant login')
+			return redirect(url_for('index'))
+		else:
+			flash('The username or password is wrong please enter correct credentials')
+			return redirect(url_for('signin'))
+			
 	return render_template('signin.html', form=form)
 
 
@@ -528,15 +622,40 @@ def backoffice():
 
 
 
+#New signup with confirmation
+def send_confirmation_email(user_email):
+    confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+ 
+    confirm_url = url_for(
+        'confirm_email',
+        token=confirm_serializer.dumps(user_email, salt='email-confirmation-salt'),
+        _external=True)
+ 
+    #html = render_template(
+        #'email_confirmation.html',
+        #confirm_url=confirm_url)
+ 
+    #send_email('Confirm Your Email Address', [user_email], [html])
+
+
+
+    send_email('Confirm Your Email Address',
+		[user_email],
+		confirm_url,
+		render_template('email_confirmation.html',confirm_url=confirm_url))
+
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-	form = SignupForm()
-	if form.validate_on_submit():
-		filename=images.save(request.files['attach_photo'])
-		url=images.url(filename)
+    form = SignupForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            try:
+                filename=images.save(request.files['attach_photo'])
+                url=images.url(filename)
 
-		user =User(surname=form.surname.data,
+                user =User(surname=form.surname.data,
 			        othernames=form.othernames.data,
 			        admin=form.admin.data,
 			        attach_photo=url,
@@ -546,22 +665,45 @@ def signup():
 			        telephone_number=form.telephone_number.data,
 			        email=form.email.data,
 			        username=form.username.data,
-			        password_hash=generate_password_hash(form.password.data)
-			        )
-		db.session.add(user)
-		db.session.commit()
+			        password_hash=generate_password_hash(form.password.data))
+                db.session.add(user)
+                db.session.commit()
 
-		agent_email=form.email.data
+ 
+                send_confirmation_email(user.email)
+                flash('Thanks for registering with Us!  Please check your email to confirm your email address.', 'All the best')
+                return redirect(url_for('index'))
 
-		send_email('Welcome Aboard OnlineHomeShoppingUG!',
-			[agent_email],
-			'Thanks for Registering with us! We are Looking forward to helping You Grow your Business',
-			'<h3>Thanks for Registering with us! We are Looking forward to helping You Grow your Business</h3>'
-			)
-		#flash('Your Registration is Succesful, You can now login')
-		return redirect(url_for('signin'))
-		flash('Your registration is Succesful,you can now login')
-	return render_template('signup.html', form=form)
+            except ValidationError:
+                db.session.rollback()
+                flash('ERROR! Email ({}) already exists.'.format(form.email.data), 'error')
+    return render_template('signup.html', form=form)
+
+
+
+#confirming the token
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        confirm_serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        email = confirm_serializer.loads(token, salt='email-confirmation-salt', max_age=3600)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'error')
+        return redirect(url_for('signin'))
+ 
+    user = User.query.filter_by(email=email).first()
+ 
+    if user.email_confirmed:
+        flash('Account already confirmed. Please login.', 'info')
+    else:
+        user.email_confirmed = True
+        user.email_confirmed_on = datetime.now()
+        db.session.add(user)
+        db.session.commit()
+        flash('Thank you for confirming your email address! All the best')
+ 
+    return redirect(url_for('index'))
+
 
 
 
@@ -587,10 +729,10 @@ def profile():
 		db.session.add(current_user._get_current_object())
 		db.session.commit()
 
-		#flash message('Your Profile has been Edited')
+		flash('Your Profile has been Updated')
 
 		return redirect(url_for('backoffice', username=current_user.username))
-		flash('Your profile has been updated')
+		
 	return render_template('profile.html', form=form)
 
 
@@ -613,8 +755,9 @@ def edit(id):
 		#db.session.add(item._get_current_object())	
 		db.session.commit()
 
-		return redirect(url_for('backoffice',user=current_user))
 		flash('The item has been successfuly updated')
+		return redirect(url_for('backoffice',user=current_user))
+		
 	return render_template('edititem.html',item=item, form=form)
 
 
@@ -626,8 +769,9 @@ def deleteitem(id):
 	db.session.delete(item)
 	db.session.commit()
 
-	return redirect(url_for('backoffice', user=current_user))
 	flash('The item has been deleted')
+	return redirect(url_for('backoffice', user=current_user))
+	
 
 @app.route('/addsideimage/<int:id>', methods=['GET','POST'])
 @login_required
@@ -641,8 +785,9 @@ def addsideimage(id):
 		item.side_image=side_url
 		db.session.commit()
 
-		return redirect(url_for('backoffice', user=current_user))
 		flash('The side inage has been successfuly added')
+		return redirect(url_for('backoffice', user=current_user))
+		
 	return render_template('sideimage.html',item=item, form=form)
 
 
@@ -658,8 +803,9 @@ def addhindimage(id):
 		item.hind_image=hind_url
 		db.session.commit()
 
-		return redirect(url_for('backoffice', user=current_user))
 		flash('The backside image has been successfuly added')
+		return redirect(url_for('backoffice', user=current_user))
+		
 	return render_template('hindimage.html',item=item, form=form)
 
 
@@ -680,8 +826,9 @@ def additem1(id):
 
 		db.session.commit()
 
-		return redirect(url_for('backoffice', user=current_user))
 		flash('The bundle item has been successfuly added')
+		return redirect(url_for('backoffice', user=current_user))
+		
 	return render_template('alsobought1.html',item=item, form=form)
 
 @app.route('/additem2/<int:id>', methods=['GET','POST'])
@@ -701,8 +848,9 @@ def additem2(id):
 
 		db.session.commit()
 
-		return redirect(url_for('backoffice', user=current_user))
 		flash('The bundle item has been successfuly added')
+		return redirect(url_for('backoffice', user=current_user))
+		
 	return render_template('alsobought2.html',item=item, form=form)
 
 @app.route('/additem3/<int:id>', methods=['GET','POST'])
@@ -722,8 +870,9 @@ def additem3(id):
 
 		db.session.commit()
 
-		return redirect(url_for('backoffice', user=current_user))
 		flash('The bundle item has been successfuly added')
+		return redirect(url_for('backoffice', user=current_user))
+		
 	return render_template('alsobought3.html',item=item, form=form)
 
 @app.route('/additem4/<int:id>', methods=['GET','POST'])
@@ -743,8 +892,9 @@ def additem4(id):
 
 		db.session.commit()
 
-		return redirect(url_for('backoffice', user=current_user))
 		flash('The bundle item has been successfuly added')
+		return redirect(url_for('backoffice', user=current_user))
+		
 	return render_template('alsobought4.html',item=item, form=form)
 
 
@@ -986,7 +1136,6 @@ def mainkitchenelectronics(name):
 @app.route('/otherkitchenware/<name>', methods=['GET','POST'])
 def otherkitchenware(name):
 	miniother=Product.query.filter_by(product_name=name).first_or_404()
-	return redirect(url_for('minikitchenware'))
 
 	return render_template('otherkitchenware.html', miniother=miniother, name=name)
 
@@ -1262,8 +1411,9 @@ def optionone():
 		db.session.add(order)
 		db.session.commit()
 
+		flash('Your order has been Received, delivery Underway')
 		return redirect(url_for('index'))
-		flash('Your order has been Received, delivery will be made right Away')
+		
 	return render_template('optionone.html', form=form)
 
 
@@ -1287,8 +1437,10 @@ def customercaredesk():
 		clientconcern,
 		render_template('feedback.html',clientname=clientname,clientemail=clientemail,mobile=mobile,
 			clientconcern=clientconcern))
+
+		flash('Thank you for your feedback, we shall respond in kind')
 		return redirect(url_for('index'))
-		flash('Thank you for your feedback')
+		
 	return render_template('customercaredesk.html',form=form)
 
 @app.route('/checkout')
@@ -1475,6 +1627,7 @@ def deals():
 		db.session.add(deal)
 		db.session.commit()
 
+		flash('The deal has been posted')
 		return redirect(url_for('backoffice', user=current_user))
 	return render_template('deal.html', form=form)
 
@@ -1489,6 +1642,7 @@ def about():
 @login_required
 def signout():
 	logout_user()
+	flash('You have been logged out. Signin to Access the Backoffice')
 	return redirect(url_for('index'))
 
 
