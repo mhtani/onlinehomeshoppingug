@@ -37,7 +37,7 @@ Markdown==2.6.11
 MarkupSafe==1.0
 matplotlib==2.1.0
 mysqlclient==1.3.12
-Pillow==5.0.0
+Pillow==8.1.1
 pycparser==2.18
 PyJWT==1.6.4
 PyMySQL==0.8.0
